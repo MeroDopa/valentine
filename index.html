@@ -38,7 +38,8 @@
 <body class="gradient-background">
   <div class="flex items-center justify-center min-h-screen p-4">
     <div class="flex flex-col items-center max-w-md w-full">
-      <img id="imageDisplay" src="https://i.pinimg.com/originals/22/fe/4d/22fe4d8e3e86a7be869a8dd5f9abc0ac.gif" 
+      <!-- Default image display -->
+      <img id="imageDisplay" src="./images/image1.gif" 
            alt="Cute animation" class="rounded-md w-full h-64 md:h-80 object-cover shadow-lg transition-all" />
       <h2 id="valentineQuestion" class="text-3xl md:text-4xl font-bold italic text-[#bd1e59] my-4 md:my-6 text-center">
         Will you be my Valentine, TuTu? 🌹
@@ -60,43 +61,38 @@
   </div>
 
   <script type="module">
+    // Import confetti library
     import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 
-    // Define the images array with local file paths
-  const images = [
-    "./images/image1.gif",
-    "./images/image2.gif",
-    "./images/image3.gif",
-    "./images/image4.gif",
-    "./images/image5.gif",
-    "./images/image6.gif"
-  ];
+    // Define the images array with local file paths (ensure these files are in your repository in the "images" folder)
+    const images = [
+      "./images/image1.gif",
+      "./images/image2.gif",
+      "./images/image3.gif",
+      "./images/image4.gif",
+      "./images/image5.gif",
+      "./images/image6.gif"
+    ];
     
+    // Get DOM elements
     const yesButton = document.getElementById('yesButton');
     const noButton = document.getElementById('noButton');
     const imageDisplay = document.getElementById('imageDisplay');
     const valentineQuestion = document.getElementById('valentineQuestion');
     const responseButtons = document.getElementById('responseButtons');
-    const celebrationMessage = document.getElementById('celebrationsMessage');
+    const celebrationMessage = document.getElementById('celebrationMessage');
 
+    // Counter for "No" clicks
     let noClicks = 0;
     const messages = [
       "Tay chr p lr kwa",
-      "Think again please!",
+      "Mee tu ka kokoh ko cx tot bu lr",
       "Ngo mr nor hyg 💔",
       "TuTu CxSone, don't say no!",
       "Sate soe mr nor"
     ];
 
-    const images = [
-      "https://i.pinimg.com/originals/22/fe/4d/22fe4d8e3e86a7be869a8dd5f9abc0ac.gif",
-      "https://media.tenor.com/1bH3y0gLhqkAAAAi/cats-heart.gif",
-      "https://media.tenor.com/1zm7RvqBqD0AAAAi/cute-love.gif",
-      "https://media.tenor.com/8JK2B7sLgZgAAAAi/love-you.gif",
-      "https://media.tenor.com/7Gg1ZwKq8RwAAAAi/cat-hug.gif",
-      "https://media.tenor.com/-C2s3RSPZ6QAAAAi/milk-and-mocha-cute.gif"
-    ];
-
+    // When the mouse hovers over the "No" button, move it randomly after 2 clicks
     noButton.addEventListener('mouseover', () => {
       if(noClicks > 2) {
         const moveX = Math.random() * 100 - 50;
@@ -105,14 +101,16 @@
       }
     });
 
+    // On clicking the "No" button, update its text and change the image
     noButton.addEventListener('click', () => {
       noClicks++;
       
       if(noClicks <= messages.length) {
         noButton.textContent = messages[noClicks - 1];
+        // Cycle through the images array based on noClicks
         imageDisplay.src = images[noClicks % images.length];
         
-        // Make Yes button more appealing
+        // Make the "Yes" button more appealing with increased font size and padding
         yesButton.style.fontSize = `${16 + (noClicks * 2)}px`;
         yesButton.style.padding = `${8 + (noClicks * 2)}px ${16 + (noClicks * 4)}px`;
       }
@@ -122,13 +120,14 @@
       }
     });
 
+    // On clicking the "Yes" button, hide other elements, change the image, show celebration, and trigger confetti
     yesButton.addEventListener('click', () => {
       responseButtons.classList.add('hidden');
       valentineQuestion.classList.add('hidden');
-      imageDisplay.src = "https://media.tenor.com/ny5msZ1i1VkAAAAi/kiss-love.gif";
+      imageDisplay.src = "./images/image1.gif"; // You can change this to another celebratory image if desired
       celebrationMessage.classList.remove('hidden');
 
-      // Confetti explosion
+      // Confetti explosion configuration
       const count = 200;
       const defaults = {
         origin: { y: 0.7 },
