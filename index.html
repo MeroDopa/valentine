@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Day</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-background {
+      background: linear-gradient(180deg, #ffd0e5 0%, #ffe8f2 36%, #ffffff 100%);
+    }
+
+    .bounce {
+      animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+
+    .pulse {
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .transition-all {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="gradient-background">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="flex flex-col items-center max-w-md w-full">
+      <img id="imageDisplay" src="https://i.pinimg.com/originals/22/fe/4d/22fe4d8e3e86a7be869a8dd5f9abc0ac.gif" 
+           alt="Cute animation" class="rounded-md w-full h-64 md:h-80 object-cover shadow-lg transition-all" />
+      <h2 id="valentineQuestion" class="text-3xl md:text-4xl font-bold italic text-[#bd1e59] my-4 md:my-6 text-center">
+        Will you be my Valentine, TuTu? 🌹
+      </h2>
+      <div class="flex gap-4 flex-wrap justify-center" id="responseButtons">
+        <button id="yesButton"
+          class="bounce transition-all inline-flex items-center justify-center rounded-full text-lg md:text-xl font-medium hover:bg-green-600 min-h-12 px-6 py-2 bg-green-500 text-white shadow-md hover:shadow-lg">
+          Absolutely Yes! 💖
+        </button>
+        <button id="noButton"
+          class="transition-all inline-flex items-center justify-center rounded-full text-lg md:text-xl font-medium hover:bg-red-600 h-12 px-6 py-2 bg-red-500 text-white shadow-md hover:shadow-lg relative">
+          Maybe No? 😢
+        </button>
+      </div>
+      <div id="celebrationMessage" class="hidden mt-4 text-center">
+        <p class="text-2xl md:text-3xl font-bold text-pink-600 pulse">Yay!! You've made me the happiest! 💞🎉</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+    
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const imageDisplay = document.getElementById('imageDisplay');
+    const valentineQuestion = document.getElementById('valentineQuestion');
+    const responseButtons = document.getElementById('responseButtons');
+    const celebrationMessage = document.getElementById('celebrationsMessage');
+
+    let noClicks = 0;
+    const messages = [
+      "Tay chr p lr bua",
+      "Think again please!",
+      "Ngo mr nor hyg 💔",
+      "TuTu CxSone, don't say no!",
+      "Sate soe mr nor"
+    ];
+
+    const images = [
+      "https://i.pinimg.com/originals/22/fe/4d/22fe4d8e3e86a7be869a8dd5f9abc0ac.gif",
+      "https://media.tenor.com/1bH3y0gLhqkAAAAi/cats-heart.gif",
+      "https://media.tenor.com/1zm7RvqBqD0AAAAi/cute-love.gif",
+      "https://media.tenor.com/8JK2B7sLgZgAAAAi/love-you.gif",
+      "https://media.tenor.com/7Gg1ZwKq8RwAAAAi/cat-hug.gif",
+      "https://media.tenor.com/-C2s3RSPZ6QAAAAi/milk-and-mocha-cute.gif"
+    ];
+
+    noButton.addEventListener('mouseover', () => {
+      if(noClicks > 2) {
+        const moveX = Math.random() * 100 - 50;
+        const moveY = Math.random() * 100 - 50;
+        noButton.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      }
+    });
+
+    noButton.addEventListener('click', () => {
+      noClicks++;
+      
+      if(noClicks <= messages.length) {
+        noButton.textContent = messages[noClicks - 1];
+        imageDisplay.src = images[noClicks % images.length];
+        
+        // Make Yes button more appealing
+        yesButton.style.fontSize = `${16 + (noClicks * 2)}px`;
+        yesButton.style.padding = `${8 + (noClicks * 2)}px ${16 + (noClicks * 4)}px`;
+      }
+
+      if(noClicks > 2) {
+        noButton.style.transition = 'transform 0.3s ease';
+      }
+    });
+
+    yesButton.addEventListener('click', () => {
+      responseButtons.classList.add('hidden');
+      valentineQuestion.classList.add('hidden');
+      imageDisplay.src = "https://media.tenor.com/ny5msZ1i1VkAAAAi/kiss-love.gif";
+      celebrationMessage.classList.remove('hidden');
+
+      // Confetti explosion
+      const count = 200;
+      const defaults = {
+        origin: { y: 0.7 },
+        colors: ['#FF69B4', '#FF1493', '#FF007F', '#DB7093']
+      };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    });
+  </script>
+</body>
+</html>
